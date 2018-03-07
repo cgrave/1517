@@ -1,0 +1,70 @@
+using BasicASPXWebsite.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace BasicASPXWebsite.SamplePages
+{
+    public partial class BasicControls : System.Web.UI.Page
+    {
+        //need Stattic variable to hang onto the data for the drop down list.
+        public static List<ddlClass> DataCollection;
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            // Always clear out old messages
+            MessageLabel.Text = "";
+            // Load the DDL on the 1st processing pass of this webpage
+            if(!Page.IsPostBack)
+            {
+                // Create a new instance of the list<T> where T is ddlClass
+                DataCollection = new List<ddlClass>();
+
+                // Load the new list of data
+                DataCollection.Add(new ddlClass(1, "COMP1008"));
+                DataCollection.Add(new ddlClass(2, "CPSC1517"));
+                DataCollection.Add(new ddlClass(3, "DMIT1508"));
+                DataCollection.Add(new ddlClass(4, "DMIT2018"));
+
+                // Assign the data source to the dropdownlist. 
+                // Set the drop downlist properties to the appropriate data collection property names
+                // Physically bind the data to the ddl control
+                CollectionList.DataSource = DataCollection;
+                CollectionList.DataTextField = "DisplayField";
+                CollectionList.DataValueField = "VaueField";
+                CollectionList.DataBind();
+
+                // To add a prompt line to the ddl..
+                CollectionList.Items.Insert(0, "select...");
+            }
+        }
+
+        protected void SubmitButtonChoice_Click(object sender, EventArgs e)
+        {
+            //MessageLabel.Text = "Inside Submit Button";
+            //Textbox access: use the property .Text
+            string submitchoice = TextBoxNumberChoice.Text;
+
+            if(string.IsNullOrEmpty(submitchoice))
+            {
+                // Label access: use the property .Text
+                MessageLabel.Text = "You did not enter a number between 1 and 4 inclusive";
+            }
+            else
+            {
+                // Radio Button List(or any list) access:
+                //.SelectedValue uses the DataValueField value
+                //.SelectedIndex is the physicall selected line index
+                RadioButtonListChoice.SelectedValue = submitchoice;
+            }
+
+        }
+
+        protected void LinkButtonSubmitChoice_Click(object sender, EventArgs e)
+        {
+            MessageLabel.Text = "Inside Submit Link Button";
+        }
+    }
+}
